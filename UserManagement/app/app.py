@@ -1,6 +1,7 @@
 import mysql.connector as c, os, requests, json
 from flask import Flask, request
 import mysql
+from hashing import hashing
 conn = c.connect(host = "localhost", user = "root", password = "ketan@123", database='test', auth_plugin='mysql_native_password')
 cursor = conn.cursor()
 
@@ -26,8 +27,9 @@ def register():
     password = request.args.get('password')
     
     if name and email and password:
+        hashed_password = hashing.hash_pass(password)
         q = "insert into test(name,email,password) values(%s, %s, %s)"
-        cursor.execute(q,(name, email, password))
+        cursor.execute(q,(name, email, hashed_password))
         conn.commit()
         print(cursor.rowcount, "record inserted.")
         return [{'response' : 'Login Success'}], 200
@@ -39,19 +41,26 @@ def register():
     
 @app.route('/login', methods=["POST"])    
 def login():    
-    
     email = request.args.get('email')
     password = request.args.get('password')
-    q = f"select * from test where email = %s and password = %s "
-    cursor.execute(q,(email,password))
+    q = "select * from test where email = %s"
+    cursor.execute(q,(email,))
     data = cursor.fetchone()
+            
     # print(f"Email: {email}, Password: {password}")
-    # print(f"Printing data: {data}   ")
-    if data != None:
+    #print(f"Printing data: {data[3]}")
+    if data == None:  
         # cursor.close()
         # conn.close()
-        return [{'response' :  'login success'}], 200
-    return [{'response' : 'Something went wrong!'}]
+        return [{'response' : 'Not Registered'}]
+    
+    #match the hash password
+    hash_status = hashing.check_hash(password,data[3])
+    if hash_status != True:
+        return [{'response' : 'Wrong Password'}]
+    
+    return [{'response' :  'login success'}], 200
+    # return [{'response' : 'Something went wrong!'}]
 
     
     
