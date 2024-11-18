@@ -3,3 +3,4 @@ requests
 mysql
 mysql-connector-python
 bcrypt
+psycopg
