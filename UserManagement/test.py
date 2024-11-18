@@ -20,7 +20,7 @@
 # print(data)
 
 # from db_pooling import Db_pooling
-from app import db_pooling
+from app import db
 import mysql.connector.pooling
 import mysql.connector
 
@@ -30,7 +30,7 @@ db_params = {
     "password" : "ketan@123"
 }
 
-db = db_pooling.Db_pooling(**db_params)
+db = db.Db_pooling(**db_params)
 
 cnx1 = db.get_connection()
 

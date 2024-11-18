@@ -1,13 +1,9 @@
 import mysql.connector as c,requests
 from flask import Flask, request
 from hashing import hashing
-from db import Db_pooling
+from db import Db_pooling,db_config
 
-db_params = {
-    "database" : "test",
-    "user" : "root",
-    "password" : "ketan@123"
-}
+db_params = db_config.db_params
 
 db = Db_pooling(**db_params)
 
