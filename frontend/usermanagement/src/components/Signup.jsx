@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { validateForm } from "../utils/Regex";
+import { Link } from "react-router";
 
 function SignUp() {
     const [passErr, setPassErr] = useState("");
@@ -28,14 +29,14 @@ function SignUp() {
     return (
         <div className="h-screen bg-violet-300 flex justify-center items-center gap-10">
             {/* Info Tab */}
-            <div className="bg-white shadow-lg p-8 h-3/5 w-96 border-4 border-black rounded-xl flex flex-col justify-center items-center">
+            <div className="bg-white shadow-lg p-8 h-3/4 w-96 border-4 border-black rounded-xl flex flex-col justify-center items-center">
                 <h1 className="text-2xl font-bold text-center text-violet-700">
                     Event Management & Planning
                 </h1>
             </div>
 
             {/* Sign Up Tab */}
-            <div className="bg-white shadow-lg p-8 h-3/5 w-96 border-4 border-black rounded-xl flex flex-col justify-start">
+            <div className="bg-white shadow-lg p-8 h-auto w-96 border-4 border-black rounded-xl flex flex-col justify-start">
                 <h1 className="text-xl font-bold text-violet-700 mb-4">
                     Create an Account
                 </h1>
@@ -88,7 +89,15 @@ function SignUp() {
                     >
                         Sign Up
                     </button>
-                    <p>Already Signed up? <a href="login.jsx">Log in</a></p>
+                    
+                    <h3 className="text-gray-700 text-sm">Already have an account?</h3>
+                    <Link
+                        to="/login"
+                        className="text-violet-700 text-sm font-bold hover:underline focus:outline-none focus:ring focus:ring-violet-300"
+                    >
+                        Login
+                    </Link>
+
                     {passErr && <p style={{ color: "red" }}>{passErr}</p>}
                 </form>
             </div>

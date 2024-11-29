@@ -25,3 +25,14 @@ export const validateForm = (formData, setPassErr) => {
     setPassErr("");
     return true;
 };
+
+export const validatePassword = (password, setPassErr ) => { 
+
+    if (!passwordRegex.test(password)) {
+        setPassErr(
+            "Password must be at least 8 characters long and include 1 uppercase, 1 lowercase, 1 number, and 1 special character"
+        );
+    return false;
+}
+
+}
