@@ -6,10 +6,27 @@ function SignUp() {
     const [passErr, setPassErr] = useState("");
     const [formData, setFormData] = useState({
         name: "",
-        emailAddress: "",
+        email: "",
         password: "",
         rePassword: "",
     });
+
+    const sendReq = async (formData) => {
+        const url = `http://127.0.0.1:5000/register?name=${encodeURIComponent(formData.name)}&email=${encodeURIComponent(formData.email)}&password=${encodeURIComponent(formData.password)}`;
+        //Code to send the API Fetch request
+        try{
+            const response = await fetch(url, {method : 'POST'})
+            if (!response.ok){
+                throw new Error(`Response status: {$response.status} `)
+            }
+            const data = await response.json()
+            return data
+        } 
+        catch(error) {
+            console.error
+        }
+        console.log("Sending Request with:", formData);
+    }
 
     const updateData = (e) => {
         setFormData({
@@ -23,6 +40,8 @@ function SignUp() {
         e.preventDefault();
         if (validateForm(formData, setPassErr)) {
             console.log("Form Data:", formData);
+            const response = sendReq(formData)
+            
         }
     };
 
@@ -57,7 +76,7 @@ function SignUp() {
                     />
                     <input
                         type="email"
-                        name="emailAddress"
+                        name="email"
                         placeholder="Email Address"
                         className="border-2 border-gray-300 rounded-md px-4 py-2 focus:ring focus:ring-violet-300"
                         value={formData.emailAddress}

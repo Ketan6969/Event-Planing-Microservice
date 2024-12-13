@@ -2,12 +2,15 @@ import { useState } from "react";
 import { validatePassword } from "../utils/Regex";
 import { Link } from "react-router";
 
+
 function Login() {
     const [passErr, setPassErr] = useState("");
     const [formData, setFormData] = useState({
-        emailAddress: "",
+        email: "",
         password: ""
     });
+
+
 
     const updateData = (e) => {
         setFormData({
@@ -17,11 +20,30 @@ function Login() {
         setPassErr(""); // Clear error on input change
     };
 
-    const submit = (e) => {
+    const sendReq = async (formData) => {
+        const url = `http://127.0.0.1:5000/login?email=${encodeURIComponent(formData.email)}&password=${encodeURIComponent(formData.password)}`;
+        //Code to send the API Fetch request
+        try{
+            const response = await fetch(url, {method : 'POST'})
+            if (!response.ok){
+                throw new Error(`Response status: {$response.status} `)
+            }
+            const data = response.json()
+            return data
+        } 
+        catch(error) {
+            console.error
+        }
+        console.log("Sending Request with:", formData);
+    }
+
+    const submit = async (e) => {
         e.preventDefault();
-        if (validatePassword(formData, setPassErr)) {
+        if (validatePassword(formData.password, setPassErr)) {
             console.log("Form Data:", formData);
         }
+        const response = await sendReq(formData)
+        console.log(response)
     };
 
     return (
@@ -47,10 +69,10 @@ function Login() {
                     
                     <input
                         type="email"
-                        name="emailAddress"
+                        name="email"
                         placeholder="Email Address"
                         className="border-2 border-gray-300 rounded-md px-4 py-2 focus:ring focus:ring-violet-300"
-                        value={formData.emailAddress}
+                        value={formData.email}
                         onChange={updateData}
                         required
                     />

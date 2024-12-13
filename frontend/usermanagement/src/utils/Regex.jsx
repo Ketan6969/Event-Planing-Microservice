@@ -3,9 +3,9 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 export const validateForm = (formData, setPassErr) => {
-    const { emailAddress, password, rePassword } = formData;
+    const { email, password, rePassword } = formData;
 
-    if (!emailRegex.test(emailAddress)) {
+    if (!emailRegex.test(email)) {
         setPassErr("Invalid email format");
         return false;
     }
@@ -34,5 +34,6 @@ export const validatePassword = (password, setPassErr ) => {
         );
     return false;
 }
-
+    setPassErr("")
+    return true
 }
